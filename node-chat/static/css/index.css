@@ -1,0 +1,105 @@
+#chatWrap {
+  width: 600px;
+  border: 1px solid #ddd;
+}
+
+/* 메인 */
+#main {
+  overflow-y: auto;
+  padding: 10px;
+  height: 500px;
+}
+
+#chatHeader {
+  height: 60px;
+  text-align: center;
+  line-height: 60px;
+  font-size: 25px;
+  font-weight: 900;
+  border-bottom: 1px solid #ddd;
+}
+
+/* 채팅 영역 */
+#chat {
+  height: 90%;
+  width: 100%;
+  overflow-y: auto;
+}
+
+/* 접속 알림 */
+.connect {
+  width: 90%;
+  margin: auto;
+  background-color: aquamarine;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* 접속 종료 알림 */
+.disconnect {
+  width: 90%;
+  margin: auto;
+  background-color: indianred;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* 내가 보낸 메시지 */
+.me {
+  width: 90%;
+  margin: auto;
+  /* background-color: lemonchiffon; */
+  border-radius: 5px;
+  margin-top: 10px;
+  text-align: right;
+  background-color: #0084FF;
+  color: #fff;
+
+  display: inline-block;
+    border-radius: 15px;
+    padding: 7px 15px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+/* 상대방이 보낸 메시지 */
+.other {
+  width: 90%;
+  margin: auto;
+  /* background-color: white; */
+  border-radius: 5px;
+  margin-top: 10px;
+  text-align: left;
+  background-color: #f1f0f0;
+
+  display: inline-block;
+    border-radius: 15px;
+    padding: 7px 15px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+/* .chat {} */
+
+.chatForm {
+  display: block;
+  width: 100%;
+  height: 50px;
+  border-top: 2px solid #f0f0f0;
+}
+
+.sendBtn {
+  outline: none;
+  border: none;
+  background: none;
+  color: #0084FF;
+  font-size: 17px;
+}
+
+input[type=text] {
+  width: 85%;
+  height: calc(100% - 1px);
+  border: none;
+  padding-bottom: 0;
+}
+
