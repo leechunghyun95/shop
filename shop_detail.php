@@ -312,7 +312,7 @@ else{//로그인 되어 있지 않을 때
                   </p> -->
 
 
-                  <!-- 판매자랑 사용자 같을 때 다를때 다른 버튼 같으면 수정삭제/ 다르면 구매 -->
+                  <!-- 판매자랑 사용자 같을 때 다를때 다른 버튼 같으 면 수정삭제/ 다르면 구매 -->
                   <?php
                     if($_SESSION[email] == $seller[email]){//사용자와 판매자가 같을경우
                       ?>
@@ -335,7 +335,7 @@ else{//로그인 되어 있지 않을 때
                           <script type="text/javascript">
                             function func_confirm () {
                               if(confirm('개인 거래 특성상 구매전 판매자와 연락후 거래하시길 바랍니다.')){
-                                location.href="order.php?id=<?= $_GET[id] ?>"
+                                location.href="order.php?item_no=<?= $_GET[id] ?>"
                               } else {
                                  
                                }
