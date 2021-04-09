@@ -16,11 +16,16 @@
   <body>
     <div class="container">
             <?php 
-                $sql = "SELECT * FROM chat_room WHERE sender='$_SESSION[email]' OR receiver='$_SESSION[email]'";
+                $sql = "SELECT * FROM chat_room WHERE sender='$_SESSION[email]' OR receiver='$_SESSION[email]' ORDER BY idx DESC";
                 $result = mysqli_query($conn,$sql);
-
-                
+    
                             
+
+                if(mysqli_num_rows($result) == 0){
+                    ?>
+                <div class="mt-3" style="text-align:center; font-weight:bold">채팅 목록이 없습니다.</div>
+                <?php }
+                
                 while($chat_room = mysqli_fetch_array($result)){
                     
                     // 채팅목록에서 채팅방이름 가져오기

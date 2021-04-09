@@ -5,13 +5,15 @@ session_start();
 
 $buyer_name = $_POST['buyer_name'];
 $buyer_tel = $_POST['buyer_tel'];
-$postal_code = $_POST['postal_cod'];
+$postal_code = $_POST['postal_code'];
 $address = $_POST['address'];
 $address2 = $_POST['address2'];
 $item_no = $_GET['item_no'];
 
+
 // 구매자 정보에 주소 입력
-$sql_user = "UPDATE user SET postal_code = $postal_code, address = $address, address2 = $address2 WHERE email = $_SESSION[email]";
+$sql_user = "UPDATE user SET postal_code = $postal_code, address = '$address', address2 = '$address2', contact= '$buyer_tel' WHERE email = '$_SESSION[email]'";
+// echo $sql_user;
 $result_uesr = mysqli_query($conn,$sql_user);
 
 // 상품정보가져오기
@@ -27,7 +29,8 @@ $row_goods = mysqli_fetch_array($result_goods);
 
 </head>
 <body>
-<!--// mode : development or production-->
+    
+<!-- // mode : development or production -->
 <script>
     IMP.init('imp14628726');
 
@@ -63,7 +66,7 @@ $row_goods = mysqli_fetch_array($result_goods);
         msg += '에러내용 : ' + rsp.error_msg;
         
         location.href="index.php"
-        
+         
     }
     alert(msg);
 });

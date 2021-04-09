@@ -9,5 +9,8 @@
 
     
 ?>
-<script type="text/javascript">alert("삭제되었습니다.");</script>
+<script type="text/javascript">
+alert("삭제되었습니다.");
+location.href="shop.php";
+</script>
 <meta http-equiv="refresh" content="0 url=/second-hands/shop.php" />

@@ -241,7 +241,7 @@ else{//로그인 되어 있지 않을 때
   <div class="container mt-5">
 
     <!-- Page Heading/Breadcrumbs -->
-    <h5 class="mt-4 mb-4"><span style="font-weight:bold;"><?= $_GET[seller] ?></span>님의 상점
+    <h5 class="mt-4 mb-4"><span style="font-weight:bold;"><?= $user_row[nick_name] ?></span>님의 상점
       <small></small>
     </h5>
 

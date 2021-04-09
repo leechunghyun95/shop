@@ -4,7 +4,7 @@
  session_start();//세션 시작
 
 //  상품번호 가져오기
- $item_no = $_GET[item_no];
+$item_no = $_GET[item_no];
 
 $sql_goods = "SELECT * FROM goods WHERE id = $item_no";
 $result_goods = mysqli_query($conn,$sql_goods);
@@ -12,9 +12,10 @@ $row_goods = mysqli_fetch_array($result_goods);
 
 // 구매자 이메일
 $buyer_email = $row_goods[buyer];
-$sql_buyer = "SELECT * FROM user WHERE email = $buyer_email";
+$sql_buyer = "SELECT * FROM user WHERE email = '$buyer_email'";
 $result_buyer = mysqli_query($conn,$sql_buyer);
 $row_buyer = mysqli_fetch_array($result_buyer);
+
 ?>
 <!DOCTYPE html>
 <html lang="ko">
@@ -228,34 +229,52 @@ else{//로그인 되어 있지 않을 때
 }
 ?>
 
-<?php
-?>
 <div class="container mt-5">
-    <h3 style="text-align:center">결제 완료</h3>
-    <table class="mt-3" style="margin:auto">
-        <tr>
-            <td><h5>주문 품목</h5></td>
-            <td>     </td>
-            <td>
-            <?= $row_goods['item_name'] ?>
-            </td>
-        </tr>
-        <tr>
-            <td><h5>배송지</h5></td>
+    <h3 class="mt-5" style="text-align:center">결제 완료</h3>
+    <p class="mt-3"style="text-align:center">구매 내역은 내 상점에서 조회 가능합니다.</p>
+    
+
+    
+
+    <table class="table mt-5" style="text-align:center">
+  
+  <tbody>
+    <tr>
+      <th scope="row">상품명</th>
+      <td><?= $row_goods['item_name'] ?></td>
+    </tr>
+    <tr>
+      <th scope="row">배송 정보</th>
+      <td>
+          <div class="row"><?= $row_buyer['nick_name'] ?></div>
+          <div class="row"><?= $row_buyer['contact'] ?></div>
+          <div class="row"><?= $row_buyer['address'] ?></div>
+          <div class="row"><?= $row_buyer['address2'] ?></div>
+      </td>
+      
+    </tr>
+    <tr>
+      <th scope="row">배송 방법</th>
+      
+      <td>택배</td>
+    </tr>
+    <tr>
+      <th scope="row">결제 금액</th>
+      
+      <td><?= $row_goods['price'] ?></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-outline-dark block mt-5 " onclick="location.href='shop.php'">계속 쇼핑하기</button>
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-outline-dark block mt-5 " onclick="location.href='my_trade.php'">내 상점으로</button>
+            </div>
             
-            <td></td>
-        </tr>
-        <tr>
-            <td><h5>배송방법</h5></td>
-            
-            <td>택배</td>
-        </tr>
-        <tr>
-            <td><h5>결제 금액</h5></td>
-            
-            <td><?= $row_goods['price'] ?></td>
-        </tr>
-    </table>
+        </div>
 </div>
 
   <!-- Bootstrap core JavaScript -->

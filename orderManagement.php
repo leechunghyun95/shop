@@ -40,7 +40,9 @@
         background:none;
     }
 
-    
+    button:focus{
+        /* color:blue; */
+    }
 
     ul {
     list-style:none;
@@ -247,65 +249,23 @@ else{//로그인 되어 있지 않을 때
 }
 ?>
   
-<!-- container -->
-<div class="container mt-5" style="width:900px;">
-
-    <!-- row -->
-    <div class="row">
-      <h3>내 상점</h3>
-    </div>
-    <!-- /row -->
-
-    <!-- row -->
-    <div class="row">
-        <!-- 내 상점 닉네임 -->
-        <div class="col mt-4"><h4><?= $user_row[nick_name] ?> | <a href="my_account.php">내 정보</a></h4></div>
-        <!-- 내 상점 평점 -->
-        <!-- <div class="col mt-4"><h4>평점이 없습니다.</h4></div> -->
-    </div>
-    <!-- /row -->
-    
-    <!-- row -->
-    <div class="row mt-3">
-        <button type="button" class="btn btn-outline-dark" onclick="location.href='seller_shop.php?seller=<?=$_SESSION[nickname]?>'">내 상품</button>
-    </div>
-    <!-- /row -->
-
-    <!-- row -->
-    <div class="row mt-3">
-        <button type="button" class="btn btn-outline-dark" onclick="location.href='orderManagement.php'">주문 내역 관리</button>
-    </div>
-    <!-- /row -->
-    
-    <!-- row -->
-    <div class="row mt-5">
-        <h3>내 거래</h3>
-
-        <!-- 완성하고 ajax써서 더 기능 추가해보기 -->
-        <!-- <ul class="History__Category-sc-13ngiq1-1 blmFNu mt-3">
-            <li class="selected">
-              <button type="button" data-index="0">구매</button>
-            </li>
-            <li class="">
-              <button type="button" data-index="1">판매</button>
-            </li>
-        </ul> -->
-
-        <h5 class="mt-5">구매 내역</h5>
-</div>
-
-
         
 
-
-        <div class="shopping__cart__table mt-3">
+        <h5 class="mt-5" style="text-align:center">주문 내역 관리</h5>
+        <div class="shopping__cart__table mt-5 ml-5">
                         <table>
                             <!-- 판매 내역 표 윗단 -->
                             <thead>
                                 <tr>
-                                    <th>상품</th>                            
-                                    <th>금액</th>
+
+                                    <th>상품</th>
+                                    <th>결제 금액</th>
+                                    <th>주문자</th>
+                                    <th>우편번호</th>
+                                    <th>주소</th>
+                                    <!-- <th>연락처</th> -->
                                     <th>상태</th>
+                                    <th>송장번호</th>
                                 </tr>
                             </thead>
                             <!-- 판매 내역 표 윗단 -->
@@ -317,19 +277,30 @@ else{//로그인 되어 있지 않을 때
                                     // 세션값으로 사용자 메일 가져와서 상품테이블에서 판매자 일치하는 값 id desc로 정렬 
                                     // 세션이메일로 가져온 값을 이메일 변수에 담기 
                                     $email = $_SESSION[email];
+                                    
                                     //가져온 이메일값과 판매자가 일치하는 상품 가져오는 쿼리문
-                                    $sql = "SELECT * FROM goods WHERE buyer = '$email' ORDER BY id desc";
+                                    $sql = "SELECT * FROM goods WHERE seller = '$email' AND (state = 1 OR state = 2) ORDER BY id desc";
                                     
                                     //쿼리문 실행
                                     $result = mysqli_query($conn,$sql);
-
-                                    
-
                                     //상품정보 row변수에 담고 while문 안에 넣어서 다 빼오기
                                     while($row = mysqli_fetch_array($result)){
-                                      
+
+                                        // 구매자 정보
+                                        $buyer = $row['buyer'];
+                                        
+                                        $sql_buyer = "SELECT * FROM user WHERE email = '$buyer'";
+                                       
+                                        $result_buyer = mysqli_query($conn,$sql_buyer);
+                                        $row_buyer = mysqli_fetch_array($result_buyer);
+
+                                        
+                                        
                                 ?>
+                                <!-- <form action = "orderManagement_ok.php" method="post"> -->
                                 <tr>
+                                  
+
                                     <!-- 상품정보 -->
                                     <td class="product__cart__item"><a href="shop_detail.php?id=<?= $row[id] ?>">
                                         <div class="product__cart__item__pic">
@@ -344,30 +315,49 @@ else{//로그인 되어 있지 않을 때
                                     </td>
                                     <!-- 상품정보 -->
 
-                                    
 
                                     <!-- 상품 가격 -->
                                     <td class="cart__price"><?= number_format($row[price]) ?>원</td>
                                     <!-- 상품 가격 -->
-                                    
-                                    <!-- 상품 거래 상황 -->
-                                    <td class="quantity__item">
-                                        <h6>
-                                        
-                                            <?php
-                                            // state가 0이면 판매중인 상품, 1이면 상품 준비중 , 2이면 배송중
-                                            if($row[state] == 1){//for_sale값 0일때, 판매 완료일때
-                                                echo "상품 준비중";
-                                            }else if($row[state] == 2){
-                                              echo "배송중";
-                                            }
-                                            ?>
-                                        </h6>
-                                    </td>
-                                    <!-- 상품 거래 상황 -->
 
+                                    <!-- 주문자 -->
+                                    <td class="cart__price"><?= $row_buyer[nick_name] ?></td>
+                                    <!-- /주문자 -->
                                     
-                                   
+                                    <!-- 우편번호 -->
+                                    <td class="cart__price"><?= $row_buyer[postal_code] ?></td>
+                                    <!-- /우편번호 -->
+
+                                    <!-- 주소 -->
+                                    <td class="cart__price"><?= $row_buyer[address] + " " +$row_buyer[address2] ?></td>
+                                    <!-- /주소 -->
+                                    
+                                    <!-- 상태 -->
+                                    <td class="cart__price">
+                                        <?php 
+                                        
+                                        if($row[state] == 1){//상품 상태 1이면 입금 확인상태
+                                            echo "결제 완료";
+                                        }else{
+                                            echo "발송 완료";
+                                        } 
+                                        ?>
+                                    </td>
+                                    <!-- /상태 -->
+                                    
+                                    <td>
+                                        <!-- 상품 state가 1이면 송장번호 입력창 나오고 2이면 송장 번호 출력  -->
+                                        <?php
+                                        if($row[state] == 1){//상품 상태 1일때(결제 완료)
+                                            ?>
+                                            <button class="btn btn-outline-dark" onclick="window.open(this.href='invoice.php?item_no=<?= $row[id] ?>', '_blank', 'width=400,height=650,toolbars=no,scrollbars=no'); return false;">송장번호 입력</button>
+                                            <?php
+                                            }else if($row[state] == 2){//상품 상태 2일때(발송 완료)
+                                                echo $row[invoice];
+                                            }  
+                                        
+                                        ?>
+                                    </td>
                                     <?php } ?>
                                     <!-- while($row = mysqli_fetch_array($result)) 와일문 닫는 괄호 -->
                                 </tr>
@@ -376,15 +366,10 @@ else{//로그인 되어 있지 않을 때
                             <!-- 판매내역 표 내용 -->
                         </table>
                     </div>
-
-
-
-
-        
     </div>
     <!-- /row -->
 
-
+                                   
 
 </div>
 <!-- /container -->

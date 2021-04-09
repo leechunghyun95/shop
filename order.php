@@ -2,6 +2,9 @@
  $conn = mysqli_connect("localhost","root","1234","shop");
 
  session_start();//세션 시작
+
+ $user = $_SESSION['email'];
+ $sql_user 
 ?>
 <!DOCTYPE html>
 <html lang="ko">
@@ -272,15 +275,7 @@ else{//로그인 되어 있지 않을 때
             <h3 class="mt-5">배송 정보</h3>
 
             <!-- post로 구매자 정보 넘기기 -->
-    <form action="payment.php" method="post">
-
-            <h5 class="mt-3">이름</h5>
-            <input class="form-control mt-1" type="text" placeholder="주문자 이름" name = "buyer_name" aria-label="default input example">
-            
-            <h5 class="mt-3">연락처</h5>
-            <input class="form-control mt-1" type="text" placeholder="연락처" name = "buyer_tel" aria-label="default input example">
-
-            <h5 class="mt-3">배송지</h5>
+    <form action="payment.php?item_no=<?= $_GET[item_no] ?>" method="POST">
             <?php
             // 세션값에 해당하는 유저정보가져오기
             $sql_user = "SELECT * FROM user WHERE email = '$_SESSION[email]'";
@@ -288,20 +283,41 @@ else{//로그인 되어 있지 않을 때
             $result_user = mysqli_query($conn,$sql_user);
             $row_user = mysqli_fetch_array($result_user);
             ?>
+
+            <h5 class="mt-3">이름</h5>
+            <input class="form-control mt-1" type="text" placeholder="주문자 이름" name = "buyer_name" aria-label="default input example" value="<?= $row_user[nick_name] ?>">
+            
+            <h5 class="mt-3">연락처</h5>
+            <input class="form-control mt-1" type="text" placeholder="연락처" name = "buyer_tel" aria-label="default input example">
+
+            <h5 class="mt-3">배송지</h5>
+            
             <div class="mt-3">
+              <?php
+              if($row_user['postal_code']){//회원가입시 저장한 주소가 존재할때
+                ?>
                 <input type="text" class="form-control" id="sample6_postcode" placeholder="우편번호" name="postal_code" value="<?= $row_user['postal_code'] ?>">
                 <input type="button" class="btn btn-outline-dark mt-2" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
                 <input type="text" class="form-control mt-2" id="sample6_address" placeholder="주소" name="address" value="<?= $row_user['address'] ?>">
                 <input type="text" class="form-control mt-2" id="sample6_detailAddress" placeholder="상세주소" name="address2" value="<?= $row_user['address2'] ?>">
                 <input type="text" class="form-control mt-2" id="sample6_extraAddress" placeholder="참고항목">
+              <?php
+              }else{ ?> 
+              <!-- 등록된 주소 없을때 -->
+                <input type="text" class="form-control" id="sample6_postcode" placeholder="우편번호" name="postal_code">
+                <input type="button" class="btn btn-outline-dark mt-2" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
+                <input type="text" class="form-control mt-2" id="sample6_address" placeholder="주소" name="address">
+                <input type="text" class="form-control mt-2" id="sample6_detailAddress" placeholder="상세주소" name="address2">
+                <input type="text" class="form-control mt-2" id="sample6_extraAddress" placeholder="참고항목">
+              <?php }
+              ?>
             </div>
-            <?php    
-            ?>
+            
         </div>
 
         <div class="row">
             <div class="col">
-                <button type="button" class="btn btn-outline-dark block mt-5 " onclick="location.href='payment.php?item_no=<?= $_GET[item_no] ?>'">결제하기</button>
+                <button type="submit" class="btn btn-outline-dark block mt-5 ">결제하기</button>
             </div>
     </form>
             <div class="col">

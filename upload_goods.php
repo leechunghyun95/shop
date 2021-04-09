@@ -109,7 +109,7 @@ if($result === false){
 
 // 사진 업로드 관련 코드
 // 설정
-$uploads_dir = '/var/www/html/second-hands/uploads';
+$uploads_dir = '/var/www/html/uploads';
 $allowed_ext = array('jpg','jpeg','png','gif');
  
 //$fn = date(YmdHis);
